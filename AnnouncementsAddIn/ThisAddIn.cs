@@ -1,5 +1,5 @@
 ﻿//
-//	Last mod:	15 July 2017 22:03:07
+//	Last mod:	09 February 2018 17:25:24
 //
 using System;
 using System.IO;
@@ -374,7 +374,7 @@ namespace AnnouncementsAddIn
 		private int GetWeekFromDate(DateTime date)
 			{
 			System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-GB", false);
-			return culture.Calendar.GetWeekOfYear(date, System.Globalization.CalendarWeekRule.FirstFullWeek, System.DayOfWeek.Sunday);
+			return culture.Calendar.GetWeekOfYear(date, System.Globalization.CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Sunday);
 			}
 
 		private void SetText(string BookmarkName, string text)

@@ -9,7 +9,7 @@
       <Value Profile="(Default)">Ecclesial Programme.xlsx</Value>
     </Setting>
     <Setting Name="CTPWidth" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">266</Value>
+      <Value Profile="(Default)">280</Value>
     </Setting>
     <Setting Name="SavePath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
