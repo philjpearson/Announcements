@@ -1,5 +1,5 @@
 ﻿//
-//	Last mod:	09 February 2018 17:25:24
+//	Last mod:	06 July 2024 12:30:18
 //
 using System;
 using System.IO;
@@ -135,11 +135,11 @@ namespace AnnouncementsAddIn
 					int wid = Properties.Settings.Default.CTPWidth;
 					if (wid != 0)
 						ctpAnnouncements.Width = wid;
-					ctlAnn.CreateAnnouncements += new AnnouncementsAddIn.AnnouncementsControl.CreateAnnouncementsHandler(ctlAnn_CreateAnnouncements);
-					ctlAnn.SaveAnnouncements += new EventHandler(ctlAnn_SaveAnnouncements);
-					ctlAnn.AddEditReminder += new AnnouncementsControl.AnnouncementsReminderHandler(ctlAnn_AddEditReminder);
-					ctlAnn.PrintAnnouncements += new EventHandler(ctlAnn_PrintAnnouncements);
-					ctlAnn.DateSelected += new AnnouncementsControl.DateSelectedHandler(ctlAnn_DateSelected);
+					ctlAnn.CreateAnnouncements += new AnnouncementsAddIn.AnnouncementsControl.CreateAnnouncementsHandler(CtlAnn_CreateAnnouncements);
+					ctlAnn.SaveAnnouncements += new EventHandler(CtlAnn_SaveAnnouncements);
+					ctlAnn.AddEditReminder += new AnnouncementsControl.AnnouncementsReminderHandler(CtlAnn_AddEditReminder);
+					ctlAnn.PrintAnnouncements += new EventHandler(CtlAnn_PrintAnnouncements);
+					ctlAnn.DateSelected += new AnnouncementsControl.DateSelectedHandler(CtlAnn_DateSelected);
 					Doc.ActiveWindow.View.Zoom.PageFit = Microsoft.Office.Interop.Word.WdPageFit.wdPageFitBestFit;
 					ConnectToExcel();
 					connectedTaskPane = true;
@@ -152,7 +152,7 @@ namespace AnnouncementsAddIn
 
 		#region Event handlers for events from our Custom Task Pane
 
-		void ctlAnn_AddEditReminder(object sender, AnnouncementsControl.AnnouncementsDateEventArgs e)
+		void CtlAnn_AddEditReminder(object sender, AnnouncementsControl.AnnouncementsDateEventArgs e)
 			{
 			int week = GetWeekFromDate(e.Date);
 			SelectWorksheet(e.Date);
@@ -162,7 +162,7 @@ namespace AnnouncementsAddIn
 			StoreReminder(week, reminder);
 			}
 
-		void ctlAnn_CreateAnnouncements(object sender, AnnouncementsControl.AnnouncementsDateEventArgs e)
+		void CtlAnn_CreateAnnouncements(object sender, AnnouncementsControl.AnnouncementsDateEventArgs e)
 			{
 			SelectWorksheet(e.Date);
 
@@ -178,19 +178,19 @@ namespace AnnouncementsAddIn
 			wdDoc.Bookmarks.get_Item(ref bn).Select();
 			}
 
-		void ctlAnn_DateSelected(object sender, AnnouncementsControl.AnnouncementsDateEventArgs e)
+		void CtlAnn_DateSelected(object sender, AnnouncementsControl.AnnouncementsDateEventArgs e)
 			{
 			SelectWorksheet(e.Date);
 			SetReminderText(GetReminder(GetWeekFromDate(e.Date)));
 			}
 
-		void ctlAnn_PrintAnnouncements(object sender, EventArgs e)
+		void CtlAnn_PrintAnnouncements(object sender, EventArgs e)
 			{
 			object background = true;
 			wdDoc.PrintOut(ref background);
 			}
 
-		void ctlAnn_SaveAnnouncements(object sender, EventArgs e)
+		void CtlAnn_SaveAnnouncements(object sender, EventArgs e)
 			{
 			string savePath = settings.SavePath;
 			if (!Path.IsPathRooted(savePath))
@@ -212,7 +212,7 @@ namespace AnnouncementsAddIn
 			if (xlApp == null)
 				{
 				string progname = settings.ProgrammeFile;
-				progname = @"D:\philj\Documents\OneDrive\My Documents\Ecclesia\Programme\Ecclesial Programme.xlsx";
+				progname = @"C:\Users\Phil\OneDrive\My Documents\Ecclesia\Programme\Ecclesial Programme.xlsm";
 				if (!Path.IsPathRooted(progname))
 					{
 					progname = Path.Combine(templatePath, settings.ProgrammeFile);
@@ -374,7 +374,7 @@ namespace AnnouncementsAddIn
 		private int GetWeekFromDate(DateTime date)
 			{
 			System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-GB", false);
-			return culture.Calendar.GetWeekOfYear(date, System.Globalization.CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Sunday);
+			return culture.Calendar.GetWeekOfYear(date, System.Globalization.CalendarWeekRule.FirstFullWeek, DayOfWeek.Sunday);
 			}
 
 		private void SetText(string BookmarkName, string text)
@@ -409,8 +409,8 @@ namespace AnnouncementsAddIn
 		/// </summary>
 		private void InternalStartup()
 			{
-			this.Startup += new System.EventHandler(ThisAddIn_Startup);
-			this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
+			Startup += new EventHandler(ThisAddIn_Startup);
+			Shutdown += new EventHandler(ThisAddIn_Shutdown);
 			}
 
 		#endregion
